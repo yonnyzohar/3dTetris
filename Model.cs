@@ -117,7 +117,13 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, Color.white);
+        Color c = new Color();
+        c.r = 0.2f;
+        c.g = 0.2f;
+        c.b = 0.2f;
+        c.a = 1;
+
+        b = new BlockType(outer, c);
         objects.Add(b);
 
         ////////////////////////////////

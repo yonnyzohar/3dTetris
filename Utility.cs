@@ -11,8 +11,13 @@ public class Utility
 
     }
 
-    public static Color getColor(Color c)
+    public static Color getColor(Color _c)
     {
+        Color c = new Color();
+        c.r = _c.r;
+        c.g = _c.g;
+        c.b = _c.b;
+        /*
         if (c == Color.green)
         {
             return Color.green;
@@ -40,9 +45,9 @@ public class Utility
         if (c == Color.cyan)
         {
             return Color.cyan;
-        }
+        }*/
 
-        return Color.white;
+        return c;
 
     }
 

@@ -13,6 +13,11 @@ public class Tetris : MonoBehaviour
         model = new Model();
         model.stepCount = model.regStepSpeed;
         model.container = GameObject.Find("cont");
+
+        GameObject mainLight = GameObject.Find("Directional Light");
+        Vector3 rot = new Vector3(-38, -24, 49);
+        mainLight.transform.eulerAngles = rot;
+
         //pos.transform.position = new Vector3(numCols/2, numRows / 2, 0);
 
 
@@ -120,6 +125,7 @@ public class Tetris : MonoBehaviour
     {
         Vector3 pos = model.container.transform.position;
         pos.x -= model.numCols / 2;
+        pos.z -= model.numZ / 2;
 
         model.container.transform.position = pos;
         // List<List<List<Block>>>()
@@ -151,7 +157,7 @@ public class Tetris : MonoBehaviour
 
                     if(row == model.numRows - 1)
                     {
-                        GameObject frame = createBlock(row+1, col, z, Color.black, model.container.transform);
+                        GameObject frame = createBlock(row+1, col, z, Color.white, model.container.transform);
                     }
 
 
