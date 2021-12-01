@@ -92,7 +92,7 @@ public class Tetris : MonoBehaviour
                             GameObject obj = model.grid[z + o.z][i + hologramRow][j + o.col].entity;
                             obj.active = true;
                             Renderer cubeRenderer = obj.GetComponent<Renderer>();
-                            Color c = Utility.getColor(o.colorClass);
+                            Color c = Color.yellow;// Utility.getColor(o.colorClass);
                             c.a = 0.3f;
                             cubeRenderer.material.SetColor("_Color", c);
                         }
@@ -257,7 +257,7 @@ public class Tetris : MonoBehaviour
     void getNewTetrinome()
     {
         BlockType obj = model.objects[model.currentObjI];
-        model.currentO = new BlockType(obj.shape, obj.colorClass);
+        model.currentO = new BlockType(obj.shape, obj.texture);
         model.currentO.col = 0;
         int num = Mathf.FloorToInt(Random.Range(0.0f, 1.0f) * model.objects.Count);
         model.currentObjI = num;
@@ -316,8 +316,14 @@ public class Tetris : MonoBehaviour
         mat.DisableKeyword("_ALPHATEST_ON");
         mat.DisableKeyword("_ALPHABLEND_ON");
         mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+
+        
+
+
         mat.renderQueue = 3000;
-        /* */
+        /* 
+
+         */
 
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         Renderer cubeRenderer = cube.GetComponent<Renderer>();
@@ -346,7 +352,11 @@ public class Tetris : MonoBehaviour
                             GameObject obj = model.grid[z + o.z][row + o.row][col + o.col].entity;
                             obj.active = true;
                             Renderer cubeRenderer = obj.GetComponent<Renderer>();
-                            cubeRenderer.material.SetColor("_Color", o.colorClass);
+                            cubeRenderer.material.SetTexture("_MainTex", o.texture);
+                            Color c = Color.white;// cubeRenderer.material.GetColor("_Color");
+                            c.a = 1f;
+                            cubeRenderer.material.SetColor("_Color", c);
+                            //cubeRenderer.material.SetColor("_Color", o.colorClass);
                             model.grid[z + o.z][row + o.row][col + o.col].clearTile = false;
                         }
                     }
@@ -393,7 +403,10 @@ public class Tetris : MonoBehaviour
 
                                 GameObject obj = model.grid[z + o.z][i + o.row][j + o.col].entity;
                                 Renderer cubeRenderer = obj.GetComponent<Renderer>();
-                                cubeRenderer.material.SetColor("_Color", o.colorClass);
+                                cubeRenderer.material.SetTexture("_MainTex", o.texture);
+                                Color c = Color.white;// cubeRenderer.material.GetColor("_Color");
+                                c.a = 1f;
+                                cubeRenderer.material.SetColor("_Color", c);
                                 obj.active = true;
                             }
                         }
@@ -522,7 +535,8 @@ public class Tetris : MonoBehaviour
                         GameObject currEntity = slice[row][col].entity;
                         Renderer currRenderer = currEntity.GetComponent<Renderer>();
 
-                        currRenderer.material.SetColor("_Color", topRenderer.material.color);
+                        //currRenderer.material.SetColor("_Color", topRenderer.material.color);
+                        currRenderer.material.SetTexture("_MainTex", topRenderer.material.GetTexture("_MainTex"));
                         slice[row][col].clearTile = slice[row - 1][col].clearTile;
 
                         Color c = Color.white;
