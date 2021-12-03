@@ -13,10 +13,11 @@ public class ChangeObj
 public class Tetris : MonoBehaviour
 {
     private Model model;
+    bool shake = false;
 
     //private int numChanges = 0;
     //private List<ChangeObj> currPieceArr;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -105,6 +106,7 @@ public class Tetris : MonoBehaviour
 
     void logic()
     {
+        shake = false;
         clearGrid();
 
         bool getNew = moveCurrentPiece(model.currentO);
@@ -187,10 +189,92 @@ public class Tetris : MonoBehaviour
        
     }
 
+    //this on counts from 0 to end of grid!
+    //is the exact same function as moving pieces - refactor!
+    void getHologramPos(BlockType o)
+    {
+        int hologramRow = 0;
+
+        for (int row = 0; row < model.numRows; row++)
+        {
+            bool hitABlock = false;
+
+            for (int z = 0; z < o.shape.Count; z++)
+            {
+                for (int i = 0; i < o.shape.Count; i++)
+                {
+                    for (int j = 0; j < o.shape.Count; j++)
+                    {
+                        if (o.shape[z][i][j] == 1)
+                        {
+                            bool inBounds = Utility.tileInBounds(model, z + o.z, row + i, j + o.col);
+                            if (inBounds)
+                            {
+                                bool clearTile = model.grid[z + o.z][row + i][j + o.col].clearTile;
+                                //if i've hit a piece
+                                if (!clearTile)
+                                {
+                                    hologramRow = row - 1;
+                                    hitABlock = true;
+                                    break;
+                                }
+                                
+                            }
+                            else
+                            {
+                                hitABlock = true;
+                                hologramRow = row-1;
+                                break;
+                            }
+                        }
+                    }
+                    if (hitABlock)
+                    {
+                        break;
+                    }
+                }
+                if (hitABlock)
+                {
+                    break;
+                }
+            }
+
+
+            if (hitABlock)
+            {
+
+                break;
+            }
+        }
+
+        if (hologramRow != 0 && hologramRow != model.currentO.row)//
+        {
+            for (int z = 0; z < o.shape.Count; z++)
+            {
+                for (int i = 0; i < o.shape.Count; i++)
+                {
+                    for (int j = 0; j < o.shape.Count; j++)
+                    {
+                        if (o.shape[z][i][j] == 1)
+                        {
+                            Block b = model.grid[z + o.z][i + hologramRow][j + o.col];
+                            bool clearTile = b.clearTile;
+                            if (clearTile)
+                            {
+                                b.pieceNum = 7;
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
     bool moveCurrentPiece(BlockType o)
     {
         bool getNewElement = false;
-        bool doBreak = false;
         Block b;
         for (int z = 0; z < o.shape.Count; z++)
         {
@@ -201,18 +285,18 @@ public class Tetris : MonoBehaviour
                 {
                     if (currShape[i][j] == 1)
                     {
-                        if (Utility.tileInBounds(model, z + o.z, i + o.row, j + o.col))
+
+                        bool inBounds = Utility.tileInBounds(model, z + o.z, i + o.row, j + o.col);
+                        if (inBounds)
                         {
                             b = model.grid[z + o.z][i + o.row][j + o.col];
+                            bool clearTile = b.clearTile;
                             //if there is currently something there
                             //we have hit an existing piece!
-                            if (b.clearTile == false)
+                            if (!clearTile)
                             {
                                 o.row--;
-                                imprintElementOnGrid(o);
                                 getNewElement = true;
-                                model.stepCount = model.regStepSpeed;
-                                doBreak = true;
                                 break;
 
                             }
@@ -227,35 +311,63 @@ public class Tetris : MonoBehaviour
                         {
                             //check to see that we're not lower than the screen
                             //if we are then we've hit ground!
-                            if ((o.row + i) >= model.grid[z].Count - 1)
+                            if ((o.row + i) >= model.numRows - 1)
                             {
                                 o.row--;
 
-                                imprintElementOnGrid(o);
-                                //clearGrid();
                                 getNewElement = true;
-                                model.stepCount = model.regStepSpeed;
-                                doBreak = true;
                                 break;
                             }
 
                         }
                     }
 
-                    if (doBreak)
+                    if (getNewElement)
                     {
                         break;
                     }
 
                 }
-                if (doBreak)
+                if (getNewElement)
                 {
                     break;
                 }
             }
-            if (doBreak)
+            if (getNewElement)
             {
                 break;
+            }
+        }
+
+        //imprint!
+        if(getNewElement)
+        {
+            if (model.stepCount == model.fastStepSpeed)
+            {
+                shake = true;
+            }
+            model.stepCount = model.regStepSpeed;
+            for (int z = 0; z < o.shape.Count; z++)
+            {
+                List<List<int>> currShape = o.shape[z];
+
+                for (int row = 0; row < currShape.Count; row++)
+                {
+                    for (int col = 0; col < currShape[row].Count; col++)
+                    {
+                        if (currShape[row][col] == 1)
+                        {
+                            bool inBounds = Utility.tileInBounds(model, z + o.z, row + o.row, col + o.col);
+                            if (inBounds)
+                            {
+                                b = model.grid[z + o.z][row + o.row][col + o.col];
+                                //b.pieceNum = o.pieceNum;
+                                b.clearTile = false;
+
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -264,46 +376,20 @@ public class Tetris : MonoBehaviour
         return getNewElement;
     }
 
-    void imprintElementOnGrid(BlockType o)
-    {
-        Block b;
-        for (int z = 0; z < o.shape.Count; z++)
-        {
-            List<List<int>> currShape = o.shape[z];
-
-            for (int row = 0; row < currShape.Count; row++)
-            {
-                for (int col = 0; col < currShape[row].Count; col++)
-                {
-                    if (currShape[row][col] == 1)
-                    {
-                        if (Utility.tileInBounds(model, z + o.z, row + o.row, col + o.col))
-                        {
-                            b = model.grid[z + o.z][row + o.row][col + o.col];
-                            b.pieceNum = o.pieceNum;
-                            b.clearTile = false;
-
-                        }
-                    }
-                }
-            }
-        }
-
-    }
 
     bool checkRow()
     {
-        for (int currRow = model.grid[0].Count - 1; currRow >= 0; currRow--)
+        for (int currRow = model.numRows - 1; currRow >= 0; currRow--)
         {
             bool breakLoop = false;
 
             //go over slice
-            for (int z = 0; z < model.grid.Count; z++)
+            for (int z = 0; z < model.numZ; z++)
             {
                 List<List<Block>> slice = model.grid[z];
 
                 //go over last row - > all columns in slice
-                for (int col = slice[currRow].Count - 1; col >= 0; col--)
+                for (int col = model.numCols - 1; col >= 0; col--)
                 {
                     //this means the column is not full
                     if (slice[currRow][col].clearTile == true)
@@ -448,92 +534,7 @@ public class Tetris : MonoBehaviour
         }
     }
 
-    //this on counts from 0 to end of grid!
-    void getHologramPos(BlockType o)
-    {
-        int hologramRow = 0;
-
-        for (int row = 0; row < model.numRows; row++)
-        {
-            bool hitABlock = false;
-
-            for (int z = 0; z < o.shape.Count; z++)
-            {
-                for (int i = 0; i < o.shape.Count; i++)
-                {
-                    for (int j = 0; j < o.shape.Count; j++)
-                    {
-                        if (o.shape[z][i][j] == 1)
-                        {
-                            bool inBounds = Utility.tileInBounds(model, z + o.z, row + i, j + o.col);
-                            if (inBounds)
-                            {
-                                bool clearTile = model.grid[z + o.z][row + i][j + o.col].clearTile;
-                                //if i've hit a piece
-                                if (!clearTile)
-                                {
-                                    hologramRow = row - 1;
-                                    hitABlock = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    if (row + i == model.numRows - 1)
-                                    {
-                                        hitABlock = true;
-                                        hologramRow = row;
-                                        break;
-                                    }
-                                }
-                            }
-
-
-                        }
-                    }
-                    if (hitABlock)
-                    {
-                        break;
-                    }
-                }
-                if (hitABlock)
-                {
-                    break;
-                }
-            }
-
-
-            if (hitABlock)
-            {
-
-                break;
-            }
-        }
-
-        if (hologramRow != 0 && hologramRow != model.currentO.row)
-        {
-            for (int z = 0; z < o.shape.Count; z++)
-            {
-                for (int i = 0; i < o.shape.Count; i++)
-                {
-                    for (int j = 0; j < o.shape.Count; j++)
-                    {
-                        if (o.shape[z][i][j] == 1)
-                        {
-                            Block b = model.grid[z + o.z][i + hologramRow][j + o.col];
-                            bool clearTile = b.clearTile;
-                            if (clearTile)
-                            {
-                                b.pieceNum = 7;
-
-                            }
-
-                        }
-                    }
-                }
-            }
-
-        }
-    }
+    
 
 
 
@@ -601,9 +602,29 @@ public class Tetris : MonoBehaviour
             }
         }
     }
+    IEnumerator shakeCam(float magnitude, float duration)
+    {
+        Vector3 origPos = model.m_MainCamera.transform.position;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+            model.m_MainCamera.transform.position = new Vector3(origPos.x + x, origPos.y + y, origPos.z);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        model.m_MainCamera.transform.position = origPos;
+    }
 
     void render()
     {
+        if(shake)
+        {
+           StartCoroutine( shakeCam(Random.Range(.1f, .3f), Random.Range(.1f, .3f)));
+
+        }
         moveCamera();
         drawGrid();
     }
