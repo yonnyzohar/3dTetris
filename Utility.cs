@@ -11,45 +11,28 @@ public class Utility
 
     }
 
-    public static Color getColor(Color _c)
+    public static GameObject createBlock(int row, int col, int z, Color color, Transform parent, bool fromGrid = false)
     {
-        Color c = new Color();
-        c.r = _c.r;
-        c.g = _c.g;
-        c.b = _c.b;
-        /*
-        if (c == Color.green)
-        {
-            return Color.green;
-        }
-        if (c == Color.red)
-        {
-            return Color.red;
-        }
-        if (c == Color.magenta)
-        {
-            return Color.magenta;
-        }
-        if (c == Color.black)
-        {
-            return Color.black;
-        }
-        if (c == Color.blue)
-        {
-            return Color.blue;
-        }
-        if (c == Color.grey)
-        {
-            return Color.grey;
-        }
-        if (c == Color.cyan)
-        {
-            return Color.cyan;
-        }*/
+        Material mat = new Material(Shader.Find("Standard"));
 
-        return c;
+        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        mat.SetInt("_ZWrite", 0);
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.DisableKeyword("_ALPHABLEND_ON");
+        mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
 
+        mat.renderQueue = 3000;
+
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        Renderer cubeRenderer = cube.GetComponent<Renderer>();
+        cubeRenderer.material = mat;
+        cubeRenderer.material.SetColor("_Color", color);
+        Vector3 pos = new Vector3(col, row, z);
+        cube.transform.position = pos;
+        return cube;
     }
+
 
     public static bool isColCollision(Model model, int _z, int _col, List<List<List<int>>> shape)
     {

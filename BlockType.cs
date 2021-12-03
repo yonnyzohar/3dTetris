@@ -10,9 +10,10 @@ public class BlockType
     public int z;
     public List<List<List<int>>> shape;//3d list
     public Texture2D texture;
+    public int pieceNum;
 
 
-    public BlockType(List<List<List<int>>> _shape, Texture2D _texture)//Color _colorClass
+    public BlockType(List<List<List<int>>> _shape, Texture2D _texture, int _pieceNum)//Color _colorClass
     {
         row = 0;
         col = 0;
@@ -20,7 +21,8 @@ public class BlockType
         shape = _shape;
         //colorClass = _colorClass;
 
-        texture = _texture; 
+        texture = _texture;
+        pieceNum = _pieceNum;
 
     }
 }

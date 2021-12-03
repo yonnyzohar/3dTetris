@@ -30,7 +30,7 @@ public class Model
     public Model()
     {
 
-        
+        int num = 0;
 
         grid = new List<List<List<Block>>>();
         //
@@ -39,9 +39,12 @@ public class Model
         List<List<List<int>>> outer;
         List<List<int>> inner;
 
+        /**/
         ///////////--shape 1---////////////
         outer = new List<List<List<int>>>();
-        inner = new List<List<int>>();
+
+        /**/
+
         //slice 1
         inner = new List<List<int>>();
         inner.Add(new List<int> { 0, 0, 0 });
@@ -63,9 +66,9 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.jpg", typeof(Texture2D)) );//Color.green
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.jpg", typeof(Texture2D)), num);//Color.green
         objects.Add(b);
-
+        num++;
 
         ///////////--shape 2---////////////
         outer = new List<List<List<int>>>();
@@ -91,9 +94,9 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.jpg", typeof(Texture2D)));//Color.red
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.jpg", typeof(Texture2D)), num);//Color.red
         objects.Add(b);
-
+        num++;
 
         ///////////--shape3---//////////////
 
@@ -126,8 +129,9 @@ public class Model
         c.b = 0.2f;
         c.a = 1;
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.jpg", typeof(Texture2D)));//c
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.jpg", typeof(Texture2D)), num);//c
         objects.Add(b);
+        num++;
 
         ////////////--shape4--////////////
         outer = new List<List<List<int>>>();
@@ -153,9 +157,9 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.jpg", typeof(Texture2D)));//Color.yellow
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.jpg", typeof(Texture2D)), num) ;//Color.yellow
         objects.Add(b);
-
+        num++;
 
         //////////--shape5--//////////
 
@@ -182,12 +186,10 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.jpg", typeof(Texture2D)));//Color.blue
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.jpg", typeof(Texture2D)),num);//Color.blue
         objects.Add(b);
-
-
-        //////////--shape6--//////////
-
+        num++;
+        
         outer = new List<List<List<int>>>();
 
         //slice 1
@@ -195,25 +197,28 @@ public class Model
         inner.Add(new List<int> { 1, 1});
         inner.Add(new List<int> { 1, 1});
         outer.Add(inner);
-
+        
         //slice 2
         inner = new List<List<int>>();
         inner.Add(new List<int> { 1, 1 });
         inner.Add(new List<int> { 1, 1 });
         outer.Add(inner);
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.jpg", typeof(Texture2D)));//Color.grey
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.jpg", typeof(Texture2D)),num);//Color.grey
         objects.Add(b);
+        num++;
 
         ////////////----shape7----///////////////
         outer = new List<List<List<int>>>();
 
         //slice 1
         inner = new List<List<int>>();
-        inner.Add(new List<int> { 0, 0,0,0 });
+        inner.Add(new List<int> { 0, 0, 0,0 });
         inner.Add(new List<int> { 0, 0, 0, 0 });
         inner.Add(new List<int> { 0, 0, 0, 0 });
         inner.Add(new List<int> { 0, 0, 0, 0 });
         outer.Add(inner);
+
+        
 
         //slice 2
         inner = new List<List<int>>();
@@ -239,10 +244,16 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.jpg", typeof(Texture2D)));//Color.cyan
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.jpg", typeof(Texture2D)),num);//Color.cyan
         objects.Add(b);
+        num++;
+        
+        //////////--shape6--//////////
+
+
+
     }
 
 
-    
+
 }
