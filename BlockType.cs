@@ -8,6 +8,7 @@ public class BlockType
     public int row;
     public int col;
     public int z;
+    public List<List<List<int>>> origShape;
     public List<List<List<int>>> shape;//3d list
     public Texture2D texture;
     public int pieceNum;
@@ -18,11 +19,19 @@ public class BlockType
         row = 0;
         col = 0;
         z = 0;
-        shape = _shape;
+        origShape = _shape;
         //colorClass = _colorClass;
 
         texture = _texture;
         pieceNum = _pieceNum;
 
+    }
+
+    public void reset()
+    {
+        row = 0;
+        col = 0;
+        z = 0;
+        shape = Utility.copyList(origShape.Count, origShape);
     }
 }

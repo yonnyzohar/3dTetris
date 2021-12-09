@@ -66,7 +66,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.jpg", typeof(Texture2D)), num);//Color.green
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.png", typeof(Texture2D)), num);//Color.green
         objects.Add(b);
         num++;
 
@@ -94,7 +94,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.jpg", typeof(Texture2D)), num);//Color.red
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.png", typeof(Texture2D)), num);//Color.red
         objects.Add(b);
         num++;
 
@@ -129,7 +129,7 @@ public class Model
         c.b = 0.2f;
         c.a = 1;
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.jpg", typeof(Texture2D)), num);//c
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.png", typeof(Texture2D)), num);//c
         objects.Add(b);
         num++;
 
@@ -157,7 +157,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.jpg", typeof(Texture2D)), num) ;//Color.yellow
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.png", typeof(Texture2D)), num) ;//Color.yellow
         objects.Add(b);
         num++;
 
@@ -186,7 +186,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.jpg", typeof(Texture2D)),num);//Color.blue
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.png", typeof(Texture2D)),num);//Color.blue
         objects.Add(b);
         num++;
         
@@ -203,7 +203,7 @@ public class Model
         inner.Add(new List<int> { 1, 1 });
         inner.Add(new List<int> { 1, 1 });
         outer.Add(inner);
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.jpg", typeof(Texture2D)),num);//Color.grey
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.png", typeof(Texture2D)),num);//Color.grey
         objects.Add(b);
         num++;
 
@@ -244,7 +244,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.jpg", typeof(Texture2D)),num);//Color.cyan
+        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.png", typeof(Texture2D)),num);//Color.cyan
         objects.Add(b);
         num++;
         
