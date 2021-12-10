@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+public class DuplicationRes
+{
+    public int len;
+    public List<List<List<int>>> list;
+
+}
+
 public class Utility
 {
     public Utility()
@@ -34,10 +41,11 @@ public class Utility
     }
 
 
-    public static bool isColCollision(Model model, int _z, int _col, List<List<List<int>>> shape)
+    public static bool isColCollision(Model model, int _offsetZ, int _offsetRow, int _offsetCol, List<List<List<int>>> shape)
     {
         bool colission = false;
-        bool breakOut = false;
+        Block b;
+
         for (int z = 0; z < shape.Count; z++)
         {
             List<List<int>> currShape = shape[z];
@@ -47,25 +55,29 @@ public class Utility
                 {
                     if (currShape[row][col] == 1)
                     {
-                        if (Utility.tileInBounds(model, z + model.currentO.z + _z, row + model.currentO.row, col + (model.currentO.col + _col)))
+                        bool inBounds = Utility.tileInBounds(model, z + _offsetZ, row + _offsetRow, col + _offsetCol);
+                        if (inBounds)
                         {
-                            if (model.grid[z + model.currentO.z + _z][row + model.currentO.row][col + (model.currentO.col + _col)].clearTile == false)
+                            b = model.grid[z + _offsetZ][row + _offsetRow][col + _offsetCol];
+                            if (b.clearTile == false)
                             {
                                 colission = true;
-                                breakOut = true;
                                 break;
+                            }
+                            else
+                            {
+                                //all is good
                             }
                         }
                         else
                         {
                             colission = true;
-                            breakOut = true;
                             break;
                         }
                     }
 
                 }
-                if (breakOut)
+                if (colission)
                 {
                     break;
                 }
@@ -83,8 +95,8 @@ public class Utility
 
         if (row < 0 || col < 0 || z < 0) return false;
 
-
-        if (z > (model.grid.Count - 1) || row > (model.grid[z].Count - 1) || col > (model.grid[z][0].Count - 1))
+        if (z > (model.grid.Count - 1)      ||
+            col > (model.grid[z][0].Count - 1))
         {
             return false;
         }
@@ -101,9 +113,12 @@ public class Utility
         return exists;
     }
 
-    public static List<List<List<int>>> copyList(int count, List<List<List<int>>> l = null)
+    public static DuplicationRes copyList(int count, List<List<List<int>>> l = null)
     {
-        List<List<List<int>>> val = new List<List<List<int>>>();
+        DuplicationRes d = new DuplicationRes();
+        d.len = 0;
+
+        d.list = new List<List<List<int>>>();
         for (int z = 0; z < count; z++)
         {
             List<List<int>> inner = new List<List<int>>();
@@ -114,7 +129,12 @@ public class Utility
                 {
                     if(l != null)
                     {
-                        inner[row].Add(l[z][row][col]);
+                        int num = l[z][row][col];
+                        if(num == 1)
+                        {
+                            d.len++;
+                        }
+                        inner[row].Add(num);
                     }
                     else
                     {
@@ -123,15 +143,16 @@ public class Utility
                     
                 }
             }
-            val.Add(inner);
+            d.list.Add(inner);
         }
-        return val;
+        return d;
     }
 
     public static List<List<List<int>>> rotateX(List<List<List<int>>> l)
     {
         int count = l.Count;
-        List<List<List<int>>> val = copyList(count, l);
+        DuplicationRes d = copyList(count, l);
+        List<List<List<int>>> val = d.list;
 
         for (int z = 0; z < count; z++)
         {
@@ -154,12 +175,14 @@ public class Utility
     //CounterClockWise
     public static List<List<List<int>>> rotateY(List<List<List<int>>> l)
     {
-        List<List<List<int>>> val = copyList(l.Count, l);
+        int count = l.Count;
+        DuplicationRes d = copyList(count, l);
+        List<List<List<int>>> val = d.list;
 
-        for (int currRow = l.Count - 1; currRow >= 0; currRow--)
+        for (int currRow = count - 1; currRow >= 0; currRow--)
         {
             //go over slice
-            for (int z = 0; z < l.Count; z++)
+            for (int z = 0; z < count; z++)
             {
                 List<List<int>> slice = l[z];
 

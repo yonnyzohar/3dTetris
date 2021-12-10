@@ -5,26 +5,29 @@ using UnityEditor;
 
 public class Model
 {
+    public bool shake = false;
     public float cameraDistance = 20;
-    public int regStepSpeed = 100;
-    public int fastStepSpeed = 1;
-    public int stepCount = 50;
+
+    public float regStepSpeed = 1;
+    public float fastStepSpeed = 0.05f;
+    public float stepCount = 1;
     
     public int numRows = 20;
-    public int numCols = 7;
-    public int numZ = 7;
+    public int numCols = 8;
+    public int numZ = 8;
+    public int hologramRow = 0;
 
     public Object prefab;
     public Camera m_MainCamera;
     public GameObject container;
     public Transform centerPoint;
 
-    public int count = 0;
     
     public  List<BlockType> objects = new List<BlockType>();
-    public int currentObjI = 0;
+    public int currTetrinombjI = 0;
     
-    public BlockType currentO;
+    public BlockType currTetrinom;
+    public BlockType hologram;
     public List<List<List<Block>>> grid;
 
     public Model()
@@ -66,7 +69,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.png", typeof(Texture2D)), num);//Color.green
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/1.png", typeof(Texture2D)), num);//Color.green
         objects.Add(b);
         num++;
 
@@ -94,7 +97,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.png", typeof(Texture2D)), num);//Color.red
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/2.png", typeof(Texture2D)), num);//Color.red
         objects.Add(b);
         num++;
 
@@ -129,7 +132,7 @@ public class Model
         c.b = 0.2f;
         c.a = 1;
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.png", typeof(Texture2D)), num);//c
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/3.png", typeof(Texture2D)), num);//c
         objects.Add(b);
         num++;
 
@@ -157,7 +160,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.png", typeof(Texture2D)), num) ;//Color.yellow
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/4.png", typeof(Texture2D)), num) ;//Color.yellow
         objects.Add(b);
         num++;
 
@@ -186,7 +189,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.png", typeof(Texture2D)),num);//Color.blue
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/5.png", typeof(Texture2D)),num);//Color.blue
         objects.Add(b);
         num++;
         
@@ -203,7 +206,7 @@ public class Model
         inner.Add(new List<int> { 1, 1 });
         inner.Add(new List<int> { 1, 1 });
         outer.Add(inner);
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.png", typeof(Texture2D)),num);//Color.grey
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/6.png", typeof(Texture2D)),num);//Color.grey
         objects.Add(b);
         num++;
 
@@ -244,7 +247,7 @@ public class Model
         inner.Add(new List<int> { 0, 0, 0, 0 });
         outer.Add(inner);
 
-        b = new BlockType(outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.png", typeof(Texture2D)),num);//Color.cyan
+        b = new BlockType(this, outer, (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/textures/7.png", typeof(Texture2D)),num);//Color.cyan
         objects.Add(b);
         num++;
         

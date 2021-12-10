@@ -12,20 +12,47 @@ public class Grid
         model = _model;
     }
 
+    public void imprint()
+    {
+        BlockType o = model.currTetrinom;
+        Block b;
+
+        for (int i = 0; i < o.blocksActual.Count; i++)
+        {
+            Vector3 v = o.blocksActual[i];
+            b = model.grid[o.z + (int)v.z][o.row + (int)v.y][o.col + (int)v.x];
+            b.clearTile = false;
+        }
+
+       
+    }
+
     //cleans the entire grid
     public void clearGrid()
     {
+        Block b;
+        
 
-        for (int z = 0; z < model.grid.Count; z++)
+        BlockType o = model.currTetrinom;
+        BlockType h = model.hologram;
+
+        for (int i = 0; i < o.blocksActual.Count; i++)
         {
-            List<List<Block>> slice = model.grid[z];
-            for (var row = 0; row < slice.Count; row++)
+            Vector3 v = o.blocksActual[i];
+            int currZ = o.z + (int)v.z;
+            int currCol = o.col + (int)v.x;
+
+            int pieceRow = o.row + (int)v.y;
+            int holoRow = h.row + (int)v.y;
+
+
+            b = model.grid[currZ][pieceRow][currCol];
+            b.pieceNum = -1;
+
+            if (holoRow != 0 && holoRow != pieceRow)
             {
-                for (var col = 0; col < slice[row].Count; col++)
-                {
-                    Block b = slice[row][col];
-                    b.pieceNum = -1;
-                }
+                b = model.grid[currZ][holoRow][currCol];
+                b.pieceNum = -1;
             }
         }
 
@@ -116,13 +143,11 @@ public class Grid
                         o.active = true;
                         if (b.pieceNum != -1)
                         {
+                            //color the piece
                             cubeRenderer.material.SetTexture("_MainTex", model.objects[b.pieceNum].texture);
                             cubeRenderer.material.SetColor("_Color", c);
                         }
-
                     }
-
-
                 }
             }
         }
